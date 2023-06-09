@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ainella's Calculator</title>
+  <link rel="icon" href="woman-feet-wear-ballerina-shoes-ballet-athlete-symbol-illustration-vector_201904-1201.png">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff6bba, #cb6bff);
+      font-family: "Courier New", Courier, monospace;
+      color: #333;
+      height: 700px;
+    }
+    
+    .calculator {
+      margin: 20px;
+    }
+    
+    .header {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    
+    .textfield {
+      margin-top: 30px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 20px;
+      font-style: italic;
+      width: 400px;
+      margin-bottom: 30px;
+    }
+    
+    .selection {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .result {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 30px;
+      font-style: italic;
+      width: 600px;
+      margin-top: 30px;
+    }
+    
+    .random-button {
+      margin-bottom: 30px;
+      width: 90px;
+      height: 70px;
+    }
+
+    button {
+      width: 100px;
+      height: 50px;
+    }
+    
+    .color-input {
+      margin-top: 40px;
+    }
+
+    .save {
+      background-color: rgb(0, 38, 255);
+      border: none;
+      color: rgb(255, 255, 255);
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .image {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 150px;
+      transform: rotate(380deg);
+    }
+
+    .image2 {
+      position: absolute;
+      top: 170px;
+      right: 500px;
+      width: 350px;
+    }
+    
+    hr {
+      margin-top: 70px;
+    }
+  </style>
+  <script>
+    function launchOperation() {
+      var numbers = document.getElementById("arguments").value.split(" ");
+      var operation = document.getElementById("operation").value;
+      
+      var result = 0;
+
+      for (var i = 0; i < numbers.length; i++) {
+        numbers[i] = parseInt(numbers[i]);
+      }
+      var result;
+      if (operation === "∑") {
+        result = numbers.reduce(function(a, b) { return a + b; }, 0);
+      } else if (operation === "∏") {
+        result = numbers.reduce(function(a, b) { return a * b; }, 1);
+      } else if (operation === ">") {
+        result = Math.max.apply(null, numbers);
+      } else if (operation === "<") {
+        result = Math.min.apply(null, numbers);
+      } else if (operation === "#") {
+        var total = numbers.reduce(function(a, b) { return a + b; }, 0);
+        result = total / numbers.length;
+      } else if (operation === "$") {
+        numbers.sort(function(a, b) { return a - b; });
+        result = numbers.join(", ");
+      }
+
+
+      document.getElementById("result").value = result;
+    }
+
+    function fillWithRandomIntegers() {
+      var argumentsField = document.getElementById("arguments");
+      var randomIntegers = [];
+      for (var i = 0; i < 10; i++) {
+        randomIntegers[i] = Math.floor(Math.random() * 10);
+      }
+      argumentsField.value = randomIntegers.join(" ");
+    }
+
+    function changeTextColor() {
+      var foregroundColor = document.getElementById("foregroundColor").value;
+      var resultField = document.getElementById("result");
+      resultField.style.color = foregroundColor;
+    }
+
+    function changeBackgroundColor() {
+      var backgroundColor = document.getElementById("backgroundColor").value;
+      var resultField = document.getElementById("result");
+      resultField.style.backgroundColor = backgroundColor;
+    }
+
+
+
+
+
+
+    function saveData() {
+      var argumentsInput = document.getElementById("arguments");
+      var operationSelect = document.getElementById("operation");
+      var resultInput = document.getElementById("result");
+      
+      var argumentsArray = argumentsInput.value.split(" ");
+      var operation = operationSelect.value;
+      var result = resultInput.value;
+      var operationText = document.querySelector("#operation option[value='" + operation + "']").text;//get display value
+
+      var data = "Arguments: " + argumentsArray.join(" ") + "\n";
+      data += "Operation: " + operationText + "\n";
+      data += "Result: " + result;
+    
+      var fileName = prompt("Enter a file name:");
+      if (fileName) {
+        var blob = new Blob([data], { type: "text/plain" });
+        var url = URL.createObjectURL(blob);
+    
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = fileName + ".txt";
+        a.click();
+      }
+    }
+
+    
+
+
+  </script>
+</head>
+<body>
+  <div class="calculator">
+    <div class="header">Ainella's Calculator</div>
+    <input type="text" id="arguments" class="textfield" placeholder="Enter numbers">
+    <button onclick="fillWithRandomIntegers()" class="random-button">Generate Random Integers</button>
+    <br>
+    <select id="operation" class="selection">
+      <option value="∑">∑ (Sum)</option>
+      <option value="∏">∏ (Product)</option>
+      <option value=">">> (Maximum)</option>
+      <option value="<">< (Minimum)</option>
+      <option value="#">< (Average)</option>
+      <option value="$">< (Sorting)</option>
+    </select>
+    <br>
+    <button onclick="launchOperation()">Calculate</button>
+    <br>
+    <input type="text" id="result" class="result" readonly>
+    <br>
+    <hr>
+    <button class="save" onclick="saveData()">Save Data</button>
+    <div class="color-input">
+      Foreground Color:
+      <input type="color" id="foregroundColor" onchange="changeTextColor()">
+      <br>
+      Background Color:
+      <input type="color" id="backgroundColor" onchange="changeBackgroundColor()">
+    </div>
+  </div>
+  <img src="calc.png" class="image" alt="Upside down image">
+  <img src="photo.png" class="image2" alt="Upside down image">
+</body>
+</html>
